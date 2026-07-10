@@ -35,7 +35,7 @@ export default function FAQ() {
   const [openId, setOpenId] = useState<number | null>(1); // Defaults to first open
 
   return (
-    <section className="w-full bg-[#0a0a0a] text-[#ededed] px-6 py-20 md:px-16 font-sans">
+    <section className="w-full bg-[#0a0a0a] text-[#ededed] px-6 pb-20 md:px-16 font-sans">
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 pb-12">
         <div>
