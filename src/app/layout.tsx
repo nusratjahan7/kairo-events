@@ -3,6 +3,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/shared/Navbar";
 import { Toaster } from "sonner";
+import Footer from "@/components/shared/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <SmoothScroll>
           <Navbar />
           <main>{children}</main>
+          <Footer />
         </SmoothScroll>
       </body>
     </html>
