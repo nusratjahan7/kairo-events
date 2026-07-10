@@ -66,13 +66,13 @@ export default function Navbar() {
         {/* Desktop Auth Actions */}
         <div className="hidden md:flex items-center gap-5 shrink-0">
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#e5e5e5] transition-colors duration-300 hover:text-white"
           >
             Sign In
           </Link>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="rounded-full bg-[#c8f542] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#0a0a0a] transition-transform duration-300 hover:scale-105"
           >
             Sign Up
@@ -141,14 +141,14 @@ export default function Navbar() {
           }`}
         >
           <Link
-            href="/signin"
+            href="/auth/signin"
             onClick={() => setIsOpen(false)}
             className="w-full text-center py-3 text-[13px] font-semibold uppercase tracking-[0.2em] text-[#e5e5e5] border border-white/20 rounded-full hover:border-white transition-colors"
           >
             Sign In
           </Link>
           <Link
-            href="/signup"
+            href="/auth/signup"
             onClick={() => setIsOpen(false)}
             className="w-full text-center py-3.5 text-[13px] font-bold uppercase tracking-[0.2em] bg-[#c8f542] hover:bg-[#add435] text-[#0a0a0a] rounded-full transition-transform active:scale-95"
           >
