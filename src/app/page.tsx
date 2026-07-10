@@ -1,4 +1,5 @@
 import Banner from "@/components/homepage/Banner";
+import FAQ from "@/components/homepage/FAQ";
 import LuxuryMarquee from "@/components/homepage/Marquee";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <div>
       <Banner />
       <LuxuryMarquee />
+      <FAQ />
     </div>
   );
 }

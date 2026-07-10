@@ -128,7 +128,7 @@ export default function Navbar() {
                     className="h-9 w-9 rounded-full object-cover border border-white/10 group-hover:border-[#c8f542]/50 transition-colors"
                   />
                 ) : (
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#c8f542]/20 to-[#c8f542]/5 border border-[#c8f542]/30 text-xs font-bold text-[#c8f542] group-hover:bg-[#c8f542]/20 transition-all">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-[#c8f542]/20 to-[#c8f542]/5 border border-[#c8f542]/30 text-xs font-bold text-[#c8f542] group-hover:bg-[#c8f542]/20 transition-all">
                     {getInitial(user.name || "")}
                   </div>
                 )}
