@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@better-auth/mongo-adapter": "^1.6.23",
+    "@stripe/stripe-js": "^9.9.0",
     "better-auth": "^1.6.23",
     "framer-motion": "^12.42.2",
     "lenis": "^1.3.25",
