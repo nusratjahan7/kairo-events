@@ -1,6 +1,6 @@
 import EventDetailsClient from "@/components/events/EventDetailsClient";
 import { getEventsDetails } from "@/lib/api/events";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 interface EventData {
   _id: string;
@@ -20,6 +20,13 @@ interface EventAPIResponse {
   data?: EventData;
 }
 
+interface APIError {
+  status?: number;
+  response?: {
+    status?: number;
+  };
+}
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -27,12 +34,23 @@ interface PageProps {
 const EventDetailsPage = async ({ params }: PageProps) => {
   const { id } = await params;
 
-  let event = null;
+  let event: EventData | null = null;
+  let isUnauthorized = false;
+
   try {
     const res = (await getEventsDetails(id)) as EventAPIResponse;
     event = res?.data || (res as unknown as EventData);
-  } catch (error) {
-    console.error("Error fetching event details on server:", error);
+  } catch (err: unknown) {
+    console.error("Error fetching event details on server:", err);
+
+    const error = err as APIError;
+    if (error?.status === 401 || error?.response?.status === 401) {
+      isUnauthorized = true;
+    }
+  }
+
+  if (isUnauthorized) {
+    redirect(`/signin?callbackUrl=/events/${id}`);
   }
 
   if (!event) {
