@@ -125,7 +125,7 @@ export default function Navbar() {
               </li>
               <li>
                 <Link
-                  href="/manage"
+                  href="/manage-events"
                   className="text-[11px] font-medium uppercase tracking-[0.2em] text-[(--foreground)]transition-colors duration-300 hover:text-[#c8f542]"
                 >
                   Manage
@@ -335,7 +335,7 @@ export default function Navbar() {
                 className="transition-all duration-500 ease-out"
               >
                 <Link
-                  href="/manage"
+                  href="/manage-events"
                   onClick={() => setIsOpen(false)}
                   className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
