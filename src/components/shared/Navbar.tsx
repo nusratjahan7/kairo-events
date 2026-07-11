@@ -117,7 +117,7 @@ export default function Navbar() {
             <>
               <li>
                 <Link
-                  href="/admin/create"
+                  href="/create"
                   className="text-[11px] font-medium uppercase tracking-[0.2em] text-[(--foreground)] transition-colors duration-300 hover:text-[#c8f542]"
                 >
                   Create
@@ -125,7 +125,7 @@ export default function Navbar() {
               </li>
               <li>
                 <Link
-                  href="/admin/manage"
+                  href="/manage"
                   className="text-[11px] font-medium uppercase tracking-[0.2em] text-[(--foreground)]transition-colors duration-300 hover:text-[#c8f542]"
                 >
                   Manage
@@ -317,7 +317,7 @@ export default function Navbar() {
                 className="transition-all duration-500 ease-out"
               >
                 <Link
-                  href="/admin/create"
+                  href="/create"
                   onClick={() => setIsOpen(false)}
                   className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
@@ -335,7 +335,7 @@ export default function Navbar() {
                 className="transition-all duration-500 ease-out"
               >
                 <Link
-                  href="/admin/manage"
+                  href="/manage"
                   onClick={() => setIsOpen(false)}
                   className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
