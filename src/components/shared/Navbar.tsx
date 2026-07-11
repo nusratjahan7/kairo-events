@@ -30,6 +30,14 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const dashboardPath =
+    user?.role === "admin" ? "/dashboard/admin" : "/dashboard/user";
+
+  const href =
+    user?.role === "admin"
+      ? "/dashboard/admin/profile"
+      : "/dashboard/user/profile";
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
     return () => {
@@ -167,14 +175,14 @@ export default function Navbar() {
                     </p>
                   </div>
                   <Link
-                    href="/dashboard"
+                    href={dashboardPath}
                     onClick={() => setDropdownOpen(false)}
                     className="flex w-full items-center rounded-lg px-3 py-2 text-xs font-medium text-[(--foreground)] hover:bg-white/5 hover:text-[#c8f542] transition-colors"
                   >
                     Dashboard
                   </Link>
                   <Link
-                    href="/profile"
+                    href={href}
                     onClick={() => setDropdownOpen(false)}
                     className="flex w-full items-center rounded-lg px-3 py-2 text-xs font-medium text-[(--foreground)] hover:bg-white/5 hover:text-[#c8f542] transition-colors"
                   >
@@ -276,7 +284,7 @@ export default function Navbar() {
                 className="transition-all duration-500 ease-out"
               >
                 <Link
-                  href="/dashboard"
+                  href={dashboardPath}
                   onClick={() => setIsOpen(false)}
                   className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
@@ -294,7 +302,7 @@ export default function Navbar() {
                 className="transition-all duration-500 ease-out"
               >
                 <Link
-                  href="/profile"
+                  href={href}
                   onClick={() => setIsOpen(false)}
                   className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
