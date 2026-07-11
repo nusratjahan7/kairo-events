@@ -21,6 +21,7 @@ export default function Navbar() {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -105,12 +106,33 @@ export default function Navbar() {
             <li key={link.name}>
               <Link
                 href={link.href}
-                className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#b3b3b3] transition-colors duration-300 hover:text-[#c8f542]"
+                className="text-[11px] font-medium uppercase tracking-[0.2em] text-[(--foreground)] transition-colors duration-300 hover:text-[#c8f542]"
               >
                 {link.name}
               </Link>
             </li>
           ))}
+
+          {isAdmin && (
+            <>
+              <li>
+                <Link
+                  href="/admin/create"
+                  className="text-[11px] font-medium uppercase tracking-[0.2em] text-[(--foreground)] transition-colors duration-300 hover:text-[#c8f542]"
+                >
+                  Create
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/manage"
+                  className="text-[11px] font-medium uppercase tracking-[0.2em] text-[(--foreground)]transition-colors duration-300 hover:text-[#c8f542]"
+                >
+                  Manage
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
 
         {/* Desktop Auth / User Action Button */}
@@ -147,14 +169,14 @@ export default function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex w-full items-center rounded-lg px-3 py-2 text-xs font-medium text-white/70 hover:bg-white/5 hover:text-[#c8f542] transition-colors"
+                    className="flex w-full items-center rounded-lg px-3 py-2 text-xs font-medium text-[(--foreground)] hover:bg-white/5 hover:text-[#c8f542] transition-colors"
                   >
                     Dashboard
                   </Link>
                   <Link
                     href="/profile"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex w-full items-center rounded-lg px-3 py-2 text-xs font-medium text-white/70 hover:bg-white/5 hover:text-[#c8f542] transition-colors"
+                    className="flex w-full items-center rounded-lg px-3 py-2 text-xs font-medium text-[(--foreground)] hover:bg-white/5 hover:text-[#c8f542] transition-colors"
                   >
                     My Profile
                   </Link>
@@ -212,7 +234,7 @@ export default function Navbar() {
       {/* Full-screen Minimalist Overlay Menu (Mobile) */}
       <div
         className={`fixed inset-0 w-screen bg-[#0a0a0a] transition-all duration-500 ease-in-out lg:hidden flex flex-col justify-between px-8 pt-24 ${
-          user ? "pb-96" : "pb-70"
+          user ? (user.role === "admin" ? "pb-120" : "pb-96") : "pb-70"
         } ${
           isOpen
             ? "opacity-100 visible pointer-events-auto"
@@ -220,7 +242,7 @@ export default function Navbar() {
         }`}
       >
         {/* Mobile Navigation List */}
-        <ul className="flex flex-col gap-6 pb-10">
+        <ul className="flex flex-col gap-6 pb-9">
           {NAV_LINKS.map((link, index) => (
             <li
               key={link.name}
@@ -248,13 +270,15 @@ export default function Navbar() {
                   transitionDelay: isOpen
                     ? `${NAV_LINKS.length * 60}ms`
                     : "0ms",
+                  transform: isOpen ? "translateY(0)" : "translateY(20px)",
+                  opacity: isOpen ? 1 : 0,
                 }}
                 className="transition-all duration-500 ease-out"
               >
                 <Link
                   href="/dashboard"
                   onClick={() => setIsOpen(false)}
-                  className="font-bold uppercase tracking-[0.15em] text-white/70 hover:text-[#c8f542]"
+                  className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
                   Dashboard
                 </Link>
@@ -264,15 +288,58 @@ export default function Navbar() {
                   transitionDelay: isOpen
                     ? `${(NAV_LINKS.length + 1) * 60}ms`
                     : "0ms",
+                  transform: isOpen ? "translateY(0)" : "translateY(20px)",
+                  opacity: isOpen ? 1 : 0,
                 }}
                 className="transition-all duration-500 ease-out"
               >
                 <Link
                   href="/profile"
                   onClick={() => setIsOpen(false)}
-                  className="font-bold uppercase tracking-[0.15em] text-white/70 hover:text-[#c8f542]"
+                  className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
                 >
                   My Profile
+                </Link>
+              </li>
+            </>
+          )}
+
+          {isAdmin && (
+            <>
+              <li
+                style={{
+                  transitionDelay: isOpen
+                    ? `${(NAV_LINKS.length + 2) * 60}ms`
+                    : "0ms",
+                  transform: isOpen ? "translateY(0)" : "translateY(20px)",
+                  opacity: isOpen ? 1 : 0,
+                }}
+                className="transition-all duration-500 ease-out"
+              >
+                <Link
+                  href="/admin/create"
+                  onClick={() => setIsOpen(false)}
+                  className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
+                >
+                  Create
+                </Link>
+              </li>
+              <li
+                style={{
+                  transitionDelay: isOpen
+                    ? `${(NAV_LINKS.length + 3) * 60}ms`
+                    : "0ms",
+                  transform: isOpen ? "translateY(0)" : "translateY(20px)",
+                  opacity: isOpen ? 1 : 0,
+                }}
+                className="transition-all duration-500 ease-out"
+              >
+                <Link
+                  href="/admin/manage"
+                  onClick={() => setIsOpen(false)}
+                  className="font-bold uppercase tracking-[0.15em] text-[(--foreground)] hover:text-[#c8f542]"
+                >
+                  Manage
                 </Link>
               </li>
             </>
@@ -292,6 +359,8 @@ export default function Navbar() {
                   <Image
                     src={user.image}
                     alt={user.name || "User Avatar"}
+                    width={40}
+                    height={40}
                     className="h-10 w-10 rounded-full border border-white/10 object-cover"
                   />
                 ) : (
