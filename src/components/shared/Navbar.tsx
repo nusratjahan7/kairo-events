@@ -211,14 +211,16 @@ export default function Navbar() {
 
       {/* Full-screen Minimalist Overlay Menu (Mobile) */}
       <div
-        className={`fixed inset-0 w-screen bg-[#0a0a0a] transition-all duration-500 ease-in-out lg:hidden flex flex-col justify-between px-8 pt-24 pb-32 ${
+        className={`fixed inset-0 w-screen bg-[#0a0a0a] transition-all duration-500 ease-in-out lg:hidden flex flex-col justify-between px-8 pt-24 ${
+          user ? "pb-96" : "pb-70"
+        } ${
           isOpen
             ? "opacity-100 visible pointer-events-auto"
             : "opacity-0 invisible pointer-events-none"
         }`}
       >
         {/* Mobile Navigation List */}
-        <ul className="flex flex-col gap-6">
+        <ul className="flex flex-col gap-6 pb-10">
           {NAV_LINKS.map((link, index) => (
             <li
               key={link.name}
