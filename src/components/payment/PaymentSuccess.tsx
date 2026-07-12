@@ -33,6 +33,8 @@ export default function PaymentSuccess() {
   useEffect(() => {
     if (!eventId || eventId === "undefined" || eventId === "null") return;
 
+    if (session === undefined) return;
+
     if (!BACKEND_URL) {
       console.error(
         "❌ NEXT_PUBLIC_BACKEND_URL is not set. Check .env.local and restart the dev server.",
@@ -43,7 +45,13 @@ export default function PaymentSuccess() {
 
     const fetchEventData = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/events/${eventId}`);
+        const token = session?.session?.token;
+
+        const res = await fetch(`${BACKEND_URL}/events/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!res.ok) {
           throw new Error(`Event fetch failed with status ${res.status}`);
@@ -69,7 +77,7 @@ export default function PaymentSuccess() {
     };
 
     fetchEventData();
-  }, [eventId]);
+  }, [eventId, session]);
 
   useEffect(() => {
     if (!eventDetails || !session_id || bookingSaved) return;
@@ -101,6 +109,7 @@ export default function PaymentSuccess() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.session?.token}`,
           },
           body: JSON.stringify(bookingData),
         });
