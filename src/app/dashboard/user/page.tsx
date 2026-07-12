@@ -32,7 +32,6 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  // 🆕 session লোড হলে ফর্ম fields প্রি-ফিল
   useEffect(() => {
     if (session?.user) {
       setName(session.user.name || "");
@@ -84,20 +83,28 @@ export default function ProfilePage() {
 
     try {
       setSaving(true);
-      const { error } = await authClient.updateUser({
+
+      console.log("Updating user...");
+      console.log("Name:", name);
+      console.log("Image:", imagePreview);
+
+      const result = await authClient.updateUser({
         name: name.trim(),
-        image: imagePreview || undefined,
+        image: imagePreview ?? undefined,
       });
 
-      if (error) {
-        showToast("error", error.message || "Failed to update profile.");
+      console.log("Update Result:", result);
+
+      if (result.error) {
+        showToast("error", result.error.message || "Failed to update profile.");
         return;
       }
-
       await refetch();
       showToast("success", "Profile updated successfully.");
     } catch (err: any) {
-      showToast("error", err.message || "Failed to update profile.");
+      console.error("Update Error:", err);
+
+      showToast("error", err?.message || "Failed to update profile.");
     } finally {
       setSaving(false);
     }
@@ -178,9 +185,9 @@ export default function ProfilePage() {
             <div className="relative group">
               {imagePreview ? (
                 <img
-                  src={user.image || undefined}
-                  alt={user.name}
-                  className="w-30 h-30 rounded-full object-cover"
+                  src={imagePreview}
+                  alt={name}
+                  className="w-24 h-24 rounded-full object-cover"
                 />
               ) : (
                 <div className="w-24 h-24 rounded-full bg-neutral-800 flex items-center justify-center text-2xl font-bold text-neutral-400 border-2 border-neutral-800">
