@@ -7,26 +7,20 @@ import { motion } from "framer-motion";
 import { getEvents } from "@/lib/api/events";
 import EventCard from "../events/EventCard";
 
-interface MongoDBDate {
-  $date: string;
-}
-
 interface Event {
-  _id: {
-    $oid: string;
-  };
+  _id: string;
   title: string;
   shortDescription: string;
   fullDescription: string;
   category: string;
-  dateTime: MongoDBDate;
+  dateTime: string;
   city: string;
   venue: string;
   price: number;
   capacity: number;
   imageUrl: string;
   userId: string;
-  createdAt: MongoDBDate;
+  createdAt: string;
 }
 
 const containerVariants = {
@@ -46,7 +40,7 @@ const cardVariants = {
     opacity: 1,
     transition: {
       duration: 0.5,
-      ease: [0.215, 0.61, 0.355, 1.0],
+      ease: [0.215, 0.61, 0.355, 1.0] as const,
     },
   },
 };
@@ -62,8 +56,16 @@ export default function FeaturedEvents() {
         setLoading(true);
         setError(null);
         const data = await getEvents();
+
         if (data && Array.isArray(data)) {
-          setEvents(data.slice(0, 4));
+          const formattedEvents = data.slice(0, 4).map((event) => ({
+            ...event,
+            _id: event._id.$oid ?? event._id,
+            dateTime: event.dateTime.$date ?? event.dateTime,
+            createdAt: event.createdAt.$date ?? event.createdAt,
+          }));
+
+          setEvents(formattedEvents);
         }
       } catch (err: any) {
         setError(err.message || "Failed to load featured events");
@@ -140,7 +142,7 @@ export default function FeaturedEvents() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {events.map((event, index) => {
-            const eventKey = event._id?.$oid || `featured-event-${index}`;
+            const eventKey = event._id || `featured-event-${index}`;
 
             return (
               <motion.div

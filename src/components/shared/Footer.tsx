@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 export default function Footer() {
   const containerVariants = {
@@ -21,7 +21,7 @@ export default function Footer() {
       transition: { duration: 0.5, ease: "easeOut" as const },
     },
   };
-  const lineVariants = {
+  const lineVariants: Variants = {
     hidden: { scaleX: 0 },
     show: { scaleX: 1, transition: { duration: 0.8, ease: "easeInOut" } },
   };

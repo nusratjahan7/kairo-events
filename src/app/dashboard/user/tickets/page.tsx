@@ -77,11 +77,9 @@ export default function MyTicketsPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = await getMyBookings(session.user.email);
-        const list: Booking[] = res || [];
+        const list = await getMyBookings(session.user.email);
         setBookings(list);
 
-        // 🆕 প্রতিটা unique eventId-এর জন্য venue/city fetch করা
         const uniqueEventIds = [
           ...new Set(list.map((b) => b.eventId).filter(Boolean)),
         ] as string[];
