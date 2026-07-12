@@ -10,6 +10,8 @@ import Image from "next/image";
 const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Events", href: "/events" },
+  { name: "About", href: "/about" },
+  { name: "episodes", href: "/episodes" },
 ];
 
 export default function Navbar() {
@@ -242,7 +244,7 @@ export default function Navbar() {
       {/* Full-screen Minimalist Overlay Menu (Mobile) */}
       <div
         className={`fixed inset-0 w-screen bg-[#0a0a0a] transition-all duration-500 ease-in-out lg:hidden flex flex-col justify-between px-8 pt-24 ${
-          user ? (user.role === "admin" ? "pb-120" : "pb-96") : "pb-70"
+          user ? (user.role === "admin" ? "h-screen" : "pb-120") : "pb-96"
         } ${
           isOpen
             ? "opacity-100 visible pointer-events-auto"
@@ -250,7 +252,7 @@ export default function Navbar() {
         }`}
       >
         {/* Mobile Navigation List */}
-        <ul className="flex flex-col gap-6 pb-9">
+        <ul className={`flex flex-col gap-4 pb-9`}>
           {NAV_LINKS.map((link, index) => (
             <li
               key={link.name}
@@ -356,7 +358,7 @@ export default function Navbar() {
 
         {/* Mobile Auth Bottom Section */}
         <div
-          className={`flex flex-col gap-4 border-t border-white/10 pt-8 transition-all duration-700 delay-200 ${
+          className={`flex flex-col gap-4 border-t border-white/10 pt-8 transition-all duration-700 delay-200 ${user?.role === "admin" ? "pb-10" : "pb-3"} ${
             isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
