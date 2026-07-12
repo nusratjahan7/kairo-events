@@ -19,7 +19,7 @@ interface MetricData {
 }
 
 interface ChartItem {
-  month: string;
+  date: string;
   revenue: number;
   bookings: number;
 }
@@ -141,14 +141,14 @@ export default function AdminDashboard() {
       </div>
 
       {/* Chart Section */}
-      <div className="rounded-2xl border border-neutral-950 bg-neutral-950 p-6 shadow-xl">
+      <div className="rounded-2xl border border-neutral-900 bg-neutral-950 p-6 shadow-xl">
         <div className="mb-6 flex items-center justify-between border-b border-neutral-900 pb-4">
           <div>
             <h2 className="text-xl font-bold text-neutral-200">
               Revenue Analytics
             </h2>
             <p className="text-sm text-neutral-500">
-              Monthly breakdown of platform income trajectories.
+              Daily breakdown of platform income trajectories.
             </p>
           </div>
           <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-[#c8f542]">
@@ -160,11 +160,11 @@ export default function AdminDashboard() {
         </div>
 
         {/* Chart Container */}
-        <div className="h-80 w-full text-xs">
+        <div className="h-80 w-full min-h-[320px] text-xs">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
-              data={data.chartData}
-              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+              data={data?.chartData || []}
+              margin={{ top: 20, right: 20, left: -10, bottom: 15 }}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
@@ -172,7 +172,7 @@ export default function AdminDashboard() {
                 stroke="#171717"
               />
               <XAxis
-                dataKey="month"
+                dataKey="date"
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "#525252", fontWeight: "600" }}
@@ -194,12 +194,12 @@ export default function AdminDashboard() {
                   fontWeight: "bold",
                 }}
                 itemStyle={{ color: "#c8f542" }}
+                labelStyle={{ color: "#a3a3a3", marginBottom: "4px" }} // Added styling for the date title inside tooltip
                 formatter={(value: any) => [
                   `$${value.toLocaleString()}`,
                   "Revenue",
                 ]}
               />
-
               <Line
                 type="monotone"
                 dataKey="revenue"
