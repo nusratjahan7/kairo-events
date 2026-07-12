@@ -36,9 +36,7 @@ export default function Navbar() {
     user?.role === "admin" ? "/dashboard/admin" : "/dashboard/user";
 
   const href =
-    user?.role === "admin"
-      ? "/dashboard/admin/profile"
-      : "/dashboard/user/profile";
+    user?.role === "admin" ? "/dashboard/admin/profile" : "/dashboard/user";
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";

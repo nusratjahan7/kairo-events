@@ -41,9 +41,9 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
         const response = await getDashboard();
-        setData(response);
+        setData(response as DashboardData);
         setError(null);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Dashboard Fetch Error:", err);
         setError("Unable to load dashboard data. Please try again later.");
       } finally {
@@ -160,7 +160,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Chart Container */}
-        <div className="h-80 w-full min-h-[320px] text-xs">
+        <div className="h-80 w-full min-h-80 text-xs">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={data?.chartData || []}
@@ -194,11 +194,13 @@ export default function AdminDashboard() {
                   fontWeight: "bold",
                 }}
                 itemStyle={{ color: "#c8f542" }}
-                labelStyle={{ color: "#a3a3a3", marginBottom: "4px" }} // Added styling for the date title inside tooltip
-                formatter={(value: any) => [
-                  `$${value.toLocaleString()}`,
-                  "Revenue",
-                ]}
+                labelStyle={{ color: "#a3a3a3", marginBottom: "4px" }}
+                formatter={(value) => {
+                  if (value === undefined || value === null)
+                    return ["$0", "Revenue"];
+                  const numericValue = Number(value);
+                  return [`$${numericValue.toLocaleString()}`, "Revenue"];
+                }}
               />
               <Line
                 type="monotone"

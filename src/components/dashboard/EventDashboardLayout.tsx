@@ -108,9 +108,8 @@ export default function EventDashboardLayout({
 
   const menuConfig: MenuConfig = {
     user: [
-      { label: "Overview", path: "/dashboard/user", icon: LayoutDashboard },
+      { label: "Profile", path: "/dashboard/user", icon: User },
       { label: "My Tickets", path: "/dashboard/user/tickets", icon: Ticket },
-      { label: "Profile", path: "/dashboard/user/profile", icon: User },
     ],
     admin: [
       { label: "Dashboard", path: "/dashboard/admin", icon: BarChart3 },
