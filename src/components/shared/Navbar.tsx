@@ -152,10 +152,10 @@ export default function Navbar() {
                 className="flex items-center gap-2 focus:outline-none cursor-pointer group"
               >
                 {user.image ? (
-                  <Image
-                    src={user.image}
-                    alt={user.name || "User Avatar"}
-                    className="h-9 w-9 rounded-full object-cover border border-white/10 group-hover:border-[#c8f542]/50 transition-colors"
+                  <img
+                    src={user.image || undefined}
+                    alt={user.name}
+                    className="w-10 h-10 rounded-full object-cover"
                   />
                 ) : (
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-[#c8f542]/20 to-[#c8f542]/5 border border-[#c8f542]/30 text-xs font-bold text-[#c8f542] group-hover:bg-[#c8f542]/20 transition-all">
