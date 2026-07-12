@@ -114,10 +114,14 @@ export default function EventDashboardLayout({
     ],
     admin: [
       { label: "Dashboard", path: "/dashboard/admin", icon: BarChart3 },
-      { label: "Manage Events", path: "/manage-events", icon: CalendarDays },
+      {
+        label: "Manage Events",
+        path: "/dashboard/admin/manage",
+        icon: CalendarDays,
+      },
       {
         label: "Create Event",
-        path: "/dashboard/create",
+        path: "/dashboard/admin/create",
         icon: PlusCircle,
       },
       { label: "Bookings", path: "/dashboard/admin/bookings", icon: Ticket },

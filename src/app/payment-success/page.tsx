@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { FaFileDownload } from "react-icons/fa";
@@ -12,6 +13,8 @@ interface EventDetails {
   price: number;
 }
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function PaymentSuccess() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -19,18 +22,41 @@ export default function PaymentSuccess() {
   const session_id = searchParams.get("session_id");
   const eventId = searchParams.get("eventId");
 
+  const { data: session } = authClient.useSession();
+
   const [eventDetails, setEventDetails] = useState<EventDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [bookingSaved, setBookingSaved] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
   const ticketRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!eventId || eventId === "undefined" || eventId === "null") return;
 
+    // 🆕 env var মিসিং হলে সাথে সাথে ধরিয়ে দেয়, silent HTML-parse error এর বদলে
+    if (!BACKEND_URL) {
+      console.error(
+        "❌ NEXT_PUBLIC_BACKEND_URL is not set. Check .env.local and restart the dev server.",
+      );
+      setLoading(false);
+      return;
+    }
+
     const fetchEventData = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/events/${eventId}`,
-        );
+        const res = await fetch(`${BACKEND_URL}/events/${eventId}`);
+
+        if (!res.ok) {
+          throw new Error(`Event fetch failed with status ${res.status}`);
+        }
+
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(
+            "Backend returned non-JSON response — check NEXT_PUBLIC_BACKEND_URL and CORS",
+          );
+        }
+
         const result = await res.json();
 
         if (result.success) {
@@ -45,6 +71,67 @@ export default function PaymentSuccess() {
 
     fetchEventData();
   }, [eventId]);
+
+  useEffect(() => {
+    if (!eventDetails || !session_id || bookingSaved) return;
+    if (session === undefined) return;
+    if (!BACKEND_URL) return;
+
+    const saveBookingToDb = async () => {
+      try {
+        const bookingData = {
+          eventId,
+          customerName: session?.user?.name || "Guest User",
+          customerEmail: session?.user?.email || "unknown@example.com",
+          eventName: eventDetails.title,
+          eventDate: new Date(eventDetails.dateTime).toLocaleDateString(
+            "en-US",
+            {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            },
+          ),
+          ticketsCount: 1,
+          totalPrice: eventDetails.price,
+          status: "confirmed",
+          stripeSessionId: session_id,
+        };
+
+        const response = await fetch(`${BACKEND_URL}/api/bookings`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Booking save failed with status ${response.status}`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(
+            "Backend returned non-JSON response while saving booking — check NEXT_PUBLIC_BACKEND_URL",
+          );
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          console.log("✅ Booking saved successfully inside MongoDB!");
+          setBookingSaved(true);
+        } else {
+          setBookingError(data.message || "Failed to save booking");
+        }
+      } catch (error: any) {
+        console.error("❌ Failed to auto-save booking data:", error);
+        setBookingError(error.message || "Failed to save booking");
+      }
+    };
+
+    saveBookingToDb();
+  }, [eventDetails, session_id, bookingSaved, session]);
 
   const handleDownloadPDF = () => {
     const printContent = ticketRef.current?.innerHTML;
@@ -73,6 +160,13 @@ export default function PaymentSuccess() {
 
   return (
     <div className="min-h-screen pt-24 bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-6 font-sans">
+      {bookingError && (
+        <div className="mb-4 text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 px-4 py-2 rounded-xl max-w-md text-center">
+          Booking record couldn't be saved: {bookingError}. Your payment is
+          still successful — please contact support with your Payment ID.
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row md:gap-10 ">
         <div className="bg-[#0e0e0e] p-8 rounded-2xl shadow-xl max-w-md w-full text-center border border-white/5 mb-8">
           <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
@@ -108,6 +202,15 @@ export default function PaymentSuccess() {
           </div>
 
           <div className="p-6 space-y-4 bg-white">
+            <div className="text-sm">
+              <span className="text-xs text-gray-400 block uppercase font-medium">
+                Attendee
+              </span>
+              <span className="font-semibold text-gray-700">
+                {session?.user?.name || "Guest User"}
+              </span>
+            </div>
+
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="text-xs text-gray-400 block uppercase font-medium">
