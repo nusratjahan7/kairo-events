@@ -72,7 +72,8 @@ const ManageEventsClient = ({ initialEvents }: ManageEventsClientProps) => {
     if (!editEvent) return;
     setLoading(true);
     try {
-      await updateEvent(editEvent._id, editEvent);
+      const { _id, ...updatePayload } = editEvent;
+      await updateEvent(editEvent._id, updatePayload);
       setEvents(events.map((e) => (e._id === editEvent._id ? editEvent : e)));
       setEditEvent(null);
     } catch (err) {
@@ -105,7 +106,7 @@ const ManageEventsClient = ({ initialEvents }: ManageEventsClientProps) => {
                   </td>
                 </tr>
               ) : (
-                events.map((event) => (
+                currentEvents.map((event) => (
                   <tr
                     key={event._id}
                     className="hover:bg-white/2 transition-colors"

@@ -192,7 +192,7 @@ export default function AdminBookingsPage() {
             Total Sales
           </p>
           <p className="text-2xl font-black text-white mt-1">
-            ৳{loading ? "..." : totalSales.toLocaleString()}
+            ${loading ? "..." : totalSales.toLocaleString()}
           </p>
         </div>
         <div className="p-5 border border-neutral-800 bg-neutral-900/40 rounded-2xl">

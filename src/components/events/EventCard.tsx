@@ -10,17 +10,17 @@ interface CardProps {
 
 const EventCard = ({ event }: CardProps) => {
   const defaultImage =
-    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7";
+    "https://images.pexels.com/photos/371159/pexels-photo-371159.jpeg";
 
   return (
     <div className="group overflow-hidden rounded-2xl border border-white/5 bg-[#0e0e0e] transition-all duration-300 hover:border-white/10 hover:shadow-xl">
       {/* Event Image */}
       <div className="relative aspect-16/10 w-full overflow-hidden bg-white/5">
         <Image
-          height={100}
-          width={100}
+          fill
           src={event.imageUrl || defaultImage}
           alt={event.title}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {/* Category Badge */}

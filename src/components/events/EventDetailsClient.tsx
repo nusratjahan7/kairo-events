@@ -78,10 +78,10 @@ const EventDetailsClient = ({ event }: EventDetailsProps) => {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           {/* Left Column: Image & Description */}
           <div className="lg:col-span-7 space-y-8">
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/5 bg-white/5 shadow-2xl">
+            <div className="relative aspect-16/10 w-full overflow-hidden rounded-3xl border border-white/5 bg-white/5 shadow-2xl">
               <Image
-                height={100}
-                width={100}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 src={event.imageUrl || defaultImage}
                 alt={event.title}
                 className="h-full w-full object-cover"
