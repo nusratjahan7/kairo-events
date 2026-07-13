@@ -144,7 +144,7 @@ export default function Navbar() {
         </ul>
 
         {/* Desktop Auth / User Action Button */}
-        <div className="hidden md:flex items-center gap-5 shrink-0">
+        <div className="hidden lg:flex items-center gap-5 shrink-0">
           {user ? (
             <div className="relative" ref={dropdownRef}>
               <button
@@ -241,7 +241,7 @@ export default function Navbar() {
 
       {/* Full-screen Minimalist Overlay Menu (Mobile) */}
       <div
-        className={`fixed inset-0 w-screen bg-[#0a0a0a] transition-all duration-500 ease-in-out lg:hidden flex flex-col justify-between px-8 pt-24 ${
+        className={`fixed inset-0 w-screen bg-[#0a0a0a] transition-all duration-500 ease-in-out lg:hidden flex flex-col px-8 pt-24 ${
           user ? (user.role === "admin" ? "h-screen" : "pb-120") : "pb-96"
         } ${
           isOpen
