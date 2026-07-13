@@ -78,9 +78,9 @@ const Banner = () => {
           <div className="overflow-hidden">
             <motion.h1
               variants={textRevealVariants}
-              className="text-[13vw] leading-[0.95] font-extrabold uppercase tracking-tight text-[#c8f542] sm:text-[9vw] md:text-[80px] lg:text-[96px]"
+              className="text-[20vw] pb-10 sm:pb-0 leading-[0.95] font-extrabold uppercase tracking-tight text-[#c8f542] sm:text-[9vw] md:text-[80px] lg:text-[96px]"
             >
-              Kairo Dallas
+              Kairo <br className="block sm:hidden" /> Dallas
             </motion.h1>
           </div>
         </div>
